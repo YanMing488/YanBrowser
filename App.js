@@ -1148,8 +1148,6 @@ function SearchScreen({ navigation }) {
             </TouchableOpacity>
           )}
         />
-
-      </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
