@@ -1631,7 +1631,7 @@ function SitesScreen({ navigation }) {
           </ScrollView>
         )}
       </View>
-      </View>
+      
     </SafeAreaView>
   );
 }
