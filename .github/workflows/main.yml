@@ -33,7 +33,7 @@ jobs:
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleRelease
+          ./gradlew assembleRelease --warning-mode=none
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
