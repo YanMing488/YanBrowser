@@ -35,7 +35,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { WebView } from 'react-native-webview';
 import * as FileSystem from 'expo-file-system/legacy';
-import * as Updates from 'expo-updates';
+// expo-updates removed — causes crash in release build
 
 // ─── SIMPLE STORAGE (FileSystem JSON — no native modules needed) ──
 const STORAGE_DIR = FileSystem.documentDirectory + 'YanBrowser/data/';
@@ -2040,25 +2040,13 @@ function TabNavigator() {
 // ═══════════════════════════════════════════════════════
 // APP ROOT
 // ═══════════════════════════════════════════════════════
-async function checkForOTAUpdate() {
-  try {
-    if (!Updates.isEmbeddedLaunch && !__DEV__) {
-      const update = await Updates.checkForUpdateAsync();
-      if (update.isAvailable) {
-        await Updates.fetchUpdateAsync();
-        await Updates.reloadAsync();
-      }
-    }
-  } catch (_) {
-    // ignore in dev or unconfigured builds
-  }
-}
+// OTA update removed temporarily
 
 export default function App() {
   useEffect(() => {
     initDB();
     ensureSitesDir();
-    checkForOTAUpdate();
+
   }, []);
 
   const C = useTheme();
