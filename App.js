@@ -149,6 +149,45 @@ function getHistory(callback) {
 
 function clearHistory() { _history = []; fsSet('history', []); }
 
+
+// ─── MULTI-SERVER HELPERS ────────────────────────────────────────
+function getServers() {
+  if (!_settings) return [];
+  const servers = _settings.servers || [];
+  // Always ensure yanshine.id is in the list
+  const hasDefault = servers.some(s => s.url && s.url.includes('yanshine.id'));
+  if (!hasDefault) {
+    return [
+      { name: 'yanshine.id', url: 'https://yanshine.id/sites/manifest.json', enabled: true },
+      ...servers,
+    ];
+  }
+  return servers;
+}
+
+function addServer(url, callback) {
+  if (!_settings) _settings = {};
+  if (!_settings.servers) _settings.servers = [];
+  const already = _settings.servers.some(s => s.url === url);
+  if (already) { callback && callback(false); return; }
+  const name = url.replace(/https?:\/\//, '').split('/')[0];
+  _settings.servers.push({ name, url, enabled: true });
+  fsSet('settings', _settings);
+  callback && callback(true);
+}
+
+function removeServer(url) {
+  if (!_settings || !_settings.servers) return;
+  _settings.servers = _settings.servers.filter(s => s.url !== url);
+  fsSet('settings', _settings);
+}
+
+function getSiteBaseFromManifest(manifestUrl) {
+  // Convert manifest URL to base URL for site files
+  // e.g. https://yanshine.id/sites/manifest.json → https://yanshine.id/sites/
+  return manifestUrl.replace(/manifest\.json$/, '');
+}
+
 // ─── SEARCH INDEX ─────────────────────────────────────────────────
 async function indexSite(siteId, path) {
   try {
