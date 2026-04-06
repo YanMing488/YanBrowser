@@ -82,7 +82,11 @@ async function loadAll() {
   if (!_settings.ai_enabled) _settings.ai_enabled = '0';
   if (!_settings.gemini_key) _settings.gemini_key = '';
   if (!_settings.history_days) _settings.history_days = '30';
-  if (!_settings.servers) _settings.servers = [];
+if (!_settings.servers) {
+  _settings.servers = [
+    { name: 'yanshine.id', url: 'https://yanshine.id/sites/manifest.json', enabled: true }
+  ];
+}
   if (!_settings.clock_enabled) _settings.clock_enabled = '1';
   if (!_settings.clock_seconds) _settings.clock_seconds = '0';
   if (!_settings.timezone) _settings.timezone = 'Asia/Jakarta';
@@ -101,7 +105,7 @@ function saveAll() {
   fsSet('index',    _index);
 }
 
-function initDB() { loadAll(); }
+async function initDB() { await loadAll(); }
 
 function getSetting(key, callback) {
   if (_settings) { callback(_settings[key] ?? null); return; }
